@@ -1,3 +1,4 @@
+// Images array to set random background every time
 const backgroundImageUrls = [
   "./assets/01.jpg",
   "./assets/02.jpg",
@@ -6,15 +7,17 @@ const backgroundImageUrls = [
   "./assets/05.jpg",
 ];
 
+// selecting all the required elements from DOM
 const quoteText = document.getElementById("quote");
 const quoteAuthor = document.getElementById("author");
 const newQuoteBtn = document.getElementById("new-quote");
 const copyQuoteBtn = document.getElementById("copy-quote");
 const shareQuoteBtn = document.getElementById("share-quote");
 const downloadImgBtn = document.getElementById("download-img");
-
+// variable which tracks the current Image Index which i will use to get the URL of a random Image
 let currentImageIndex;
 
+//function that fetch data from api and also set the background image
 async function getRandomQuote() {
   try {
     const res = await fetch(
@@ -31,6 +34,7 @@ async function getRandomQuote() {
   }
 }
 
+//function to copy the quote to the clipboard
 async function copyToClipboard() {
   try {
     const textToCopy = `${quoteText.textContent}\n${quoteAuthor.textContent}`;
@@ -46,6 +50,7 @@ async function copyToClipboard() {
   }
 }
 
+// function which open a new window with the given url
 function shareOnTwitter() {
   const quote = `${quoteText.textContent}\n 
   ${quoteAuthor.textContent}`;
@@ -55,6 +60,7 @@ function shareOnTwitter() {
   window.open(twitterShareUrl, "_blank");
 }
 
+// function which pick a random url from array and set it to background
 function setRandomBackground() {
   const randomIndex = Math.floor(Math.random() * backgroundImageUrls.length);
   currentImageIndex = randomIndex;
@@ -63,6 +69,7 @@ function setRandomBackground() {
   document.body.style.backgroundPosition = "center";
 }
 
+//function which download a image
 function downloadImage() {
   const imageURL = backgroundImageUrls[currentImageIndex];
   const link = document.createElement("a");
@@ -73,11 +80,13 @@ function downloadImage() {
   document.body.removeChild(link);
 }
 
+// adding event listners
 newQuoteBtn.addEventListener("click", getRandomQuote);
 copyQuoteBtn.addEventListener("click", copyToClipboard);
 shareQuoteBtn.addEventListener("click", shareOnTwitter);
 downloadImgBtn.addEventListener("click", downloadImage);
 
+// when the page get loaded or reloaded this function is called
 document.addEventListener("DOMContentLoaded", () => {
   getRandomQuote();
 });
